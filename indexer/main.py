@@ -1,8 +1,6 @@
 import os
 import json
 
-from time import sleep
-
 from kafka import KafkaProducer
 from kafka import KafkaConsumer
 
