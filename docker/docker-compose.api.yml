@@ -6,6 +6,9 @@ services:
     environment:
       FLASK_APP: main
       FLASK_DEBUG: "true"
+      MONGO_DB_CONNECTION_STRING: "mongodb://root:masterkey@mongo:27017"
+      KAFKA_BROKER_URL: broker:9092
+      ALERTS_TOPIC: intellisite.alerts
     ports:
       - 8082:8082
 networks:

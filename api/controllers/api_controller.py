@@ -1,6 +1,7 @@
-from flask import Blueprint, current_app, jsonify, request
-
-from services.DbService import DbService
+import json
+from flask import Blueprint, Response, current_app, jsonify, request
+from services.AlertsService import AlertsService
+from services.DetectionsService import DetectionsService
 
 blueprint = Blueprint('api', __name__)
 
@@ -10,12 +11,12 @@ def post_users():
 
 @blueprint.route('/api/v1/detections')
 def get_detections():
-    skip_param = request.args.get("skip")  
-    limit_param = request.args.get("limit")
+    skip_param = request.args.get("skip", 0, int)  
+    limit_param = request.args.get("limit", 0, int)
         
-    detections = DbService().get_detections(
-        int(skip_param) if skip_param is not None else 0,
-        int(limit_param) if limit_param is not None else 0
+    detections = DetectionsService().get_detections(
+        skip_param,
+        limit_param
     )
     
     current_app.logger.debug ("Fetched Detections: %s", detections)
@@ -23,9 +24,12 @@ def get_detections():
     
 @blueprint.route('/api/v1/stats')
 def get_stats():
-    
-    return "stats"
+    detections_by_maker = DetectionsService().get_detections_by_maker()
+    return jsonify(detections_by_maker)
 
 @blueprint.route('/api/v1/alerts')
 def get_alerts():
-    return "alerts"
+    return Response(
+        AlertsService().listen(), 
+        mimetype="text/event-stream"
+    )
