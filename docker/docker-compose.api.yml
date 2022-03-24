@@ -9,6 +9,8 @@ services:
       MONGO_DB_CONNECTION_STRING: "mongodb://root:masterkey@mongo:27017"
       KAFKA_BROKER_URL: broker:9092
       ALERTS_TOPIC: intellisite.alerts
+      JWT_KEY: "asdfasdqwerbcvzcxvadfda"
+      TOKEN_EXPIRATION_MINUTES: 30
     ports:
       - 8082:8082
 networks:
