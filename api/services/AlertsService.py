@@ -1,4 +1,3 @@
-import json
 from clients.KafkaClient import KafkaClient
 
 class AlertsService (object):
