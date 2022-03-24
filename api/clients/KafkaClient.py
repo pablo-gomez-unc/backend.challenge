@@ -1,7 +1,4 @@
-from cmath import log
-import json
 import os
-from flask import app, current_app, jsonify
 
 from kafka import KafkaConsumer
 
