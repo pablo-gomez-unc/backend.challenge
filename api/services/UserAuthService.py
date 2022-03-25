@@ -29,6 +29,7 @@ class UserAuthService (object):
         
     def is_token_valid(self,token) -> bool:
         try:
+            LoggingService().get_logger().debug(token)
             data = jwt.decode(token, self.__JWT_KEY, algorithms=['HS256'])
             LoggingService().get_logger().debug(DbClient().get_user_list())
 

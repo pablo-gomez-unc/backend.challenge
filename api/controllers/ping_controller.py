@@ -1,7 +1,10 @@
 from flask import Blueprint
+from flask_restx import Api, Resource
 
 blueprint = Blueprint('ping', __name__)
+api = Api(blueprint, version='1.0', title='Detections api')
 
-@blueprint.route('/ping')
-def get_ping():
-    return {'message': 'pong'}
+@api.route('/ping')
+class ping (Resource) :
+    def get(self):
+        return {'message': 'pong'}
