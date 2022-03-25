@@ -4,27 +4,21 @@ from pymongo import MongoClient
 
 from services.LoggingService import LoggingService
 
-class DbClient (object):
+class DbClient(object):
     __CONNECTION_STRING = os.environ.get("MONGO_DB_CONNECTION_STRING") 
-    __instance = None
     
-    def __init__(self):
-        if DbClient.__instance is not None:
-            pass
-        DbClient.__instance = self
-        self.__connect()
-        self.logger = LoggingService().get_logger()
-        
-    def __init__(self,db,logger):
-        if DbClient.__instance is not None:
-            pass
-        DbClient.__instance = self
-        self.db = db    
-        self.logger = logger
+    def __new__(self,db=None,logger=None):
+        if not hasattr(self, 'instance'):
+            self.instance = super(DbClient, self).__new__(self)
+        return self.instance
     
-    def __connect (self) -> None:
+    def __init__(self,db=None,logger=None):
+        self.db = self.__connect_db() if db is None else db
+        self.logger = LoggingService().get_logger() if logger is None else logger
+    
+    def __connect_db (self) :
         client = MongoClient(self.__CONNECTION_STRING)
-        self.db = client.intellisite
+        return client.intellisite
         
     def get_detections(self, skip:int = 0, limit:int = 0) -> List:    
         try:
